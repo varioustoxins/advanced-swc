@@ -1,15 +1,22 @@
 # Idiomatic Python
 
 
-Extracts from `The Zen of Python
-<http://www.python.org/doc/Humor.html#zen>`__ by Tim Peters:
+Extracts from `The Zen of Python by Tim Peters:
 
   - Beautiful is better than ugly.
   - Explicit is better than implicit.
   - Simple is better than complex.
   - Readability counts.
+  - ...
 
-(The whole Zen is worth reading...)
+but where to find it try importing `this`
+```python
+
+import this 
+
+```
+
+__Anyway the point is__
 
 The first step in programming is getting stuff to work at all.
 
@@ -31,6 +38,7 @@ extent.)
 
 For example, let's consider the right way to keep track of the item number
 while iterating over a list.  So, given a list z,
+
 ```python
 >>> z = [ 'a', 'b', 'c', 'd' ]
 ```
@@ -50,12 +58,14 @@ You could use a while loop:
 ```
 or a for loop:
 
+```python
 >>> for i in range(0, len(z)):
 ...    print i, z[i]
 0 a
 1 b
 2 c
 3 d
+```
 
 but I think the clearest option is to use ``enumerate``:
 
@@ -91,9 +101,9 @@ this case, iterables -- is very very easy not only to use but to
 reusable, while improving code readability dramatically.  And that's
 the sort of benefit you will get from writing idiomatic Python.
 
-##Some basic data types
+## Some basic data types
 
-###Tuples 
+### Tuples 
 I'm sure you're all familiar with tuples, lists, and dictionaries, right?
 Let's do a quick tour nonetheless.
 
@@ -268,7 +278,7 @@ do with dictionaries.  I think they're incredibly powerful.
 
 .. @CTB invert dictionary
 
-###List comprehensions
+### List comprehensions
 
 
 List comprehensions are neat little constructs that will shorten your
@@ -299,10 +309,12 @@ so pretty much anything you want can go in ``expression`` and ``conditional``.
 I find list comprehensions to be very useful for both file parsing and
 for simple math.  Consider a file containing data and comments: ::
 
+```python
   # this is a comment or a header
   1
   # another comment
   2
+```
 
 where you want to read in the numbers only:
 
@@ -331,7 +343,7 @@ Oh, and one rule of thumb: if your list comprehension is longer than
 one line, change it to a for loop; it will be easier to read, and easier
 to understand.
 
-###Building your own types
+### Building your own types
 
 
 Most people should be pretty familiar with basic classes.
@@ -617,7 +629,7 @@ a b
 
 because self.index is incremented in each loop.
 
-###Generators
+### Generators
 
 
 Generators are a Python implementation of `coroutines
@@ -741,7 +753,7 @@ generator than as an iterator:
 Abstruse note: we don't even have to catch ``StopIteration`` here, because
 the for loop simply ends when ``some_iter`` is done!
 
-###assert
+### assert
 
 
 One of the most underused keywords in Python is ``assert``.  Assert is
@@ -793,7 +805,7 @@ If you need to raise an exception in production code, see below.  The
 quickest and dirtiest way is to just "raise Exception", but that's kind
 of non-specific ;).
 
-###Conclusions
+### Conclusions
 
 Use of common Python idioms -- both in your python code and for your
 new types -- leads to short, sweet programs.
