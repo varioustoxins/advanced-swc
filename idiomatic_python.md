@@ -201,11 +201,13 @@ Dictionaries have a few really neat features that I use pretty frequently.
 For example, let's collect (key, value) pairs where we potentially have
 multiple values for each key.  That is, given a file containing this data, ::
 
+```
   a 5
   b 6
   d 7
   a 2
   c 1
+  
 
 suppose we want to keep all the values?  If we just did it the simple way,
 
@@ -223,15 +225,13 @@ we would lose all but the last value for each key:
 {'a': 2, 'c': 1, 'b': 6, 'd': 7}
 ```
 
-You can collect *all* the values by using ``get``:
+You can collect *all* the values by using ``setdefault``:
 
 ```python
 >>> d = {}
 >>> for line in file('data/keyvalue.txt'):
 ...   key, value = line.split()
-...   l = d.get(key, [])
-...   l.append(int(value))
-...   d[key] = l
+...   l = d.sefdefault(key, []).append(int(value))
 >>> d
 {'a': [5, 2], 'c': [1], 'b': [6], 'd': [7]}
 ```
