@@ -67,7 +67,7 @@ or a for loop:
 3 d
 ```
 
-but I think the clearest option is to use ``enumerate``:
+but the clearest option is to use ``enumerate``:
 
 ```python
 >>> for i, item in enumerate(z):
@@ -138,16 +138,16 @@ it's just easy to keep track of stuff:
 It's also easy to sort.  Consider this set of data:
 
 ```python
->>> y = [ ('IBM', 5), ('Zil', 3), ('DEC', 18) ]
+>>> y = [ ('IBM', 5), ('Zil', 3), ('DEC', 18), ('IBM', 8)]
 ```
 
 The ``sort`` method will run ``cmp`` on each of the tuples,
-which sort on the first element of each tuple:
+which sort on the first element of each tuple and then each susequenxt on:
 
 ```python
 >>> y.sort()
 >>> y
-[('DEC', 18), ('IBM', 5), ('Zil', 3)]
+[('DEC', 18), ('IBM', 5), ('IBM', 8), ('Zil', 3)]
 ```
 
 Often it's handy to sort tuples on a different tuple element, and there
