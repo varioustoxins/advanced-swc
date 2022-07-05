@@ -31,13 +31,14 @@ extent.)
 
 For example, let's consider the right way to keep track of the item number
 while iterating over a list.  So, given a list z,
-```
+```python
 >>> z = [ 'a', 'b', 'c', 'd' ]
 ```
 let's try printing out each item along with its index.
 
 You could use a while loop:
 
+```python
 >>> i = 0
 >>> while i < len(z):
 ...    print i, z[i]
@@ -46,7 +47,7 @@ You could use a while loop:
 1 b
 2 c
 3 d
-
+```
 or a for loop:
 
 >>> for i in range(0, len(z)):
@@ -58,12 +59,14 @@ or a for loop:
 
 but I think the clearest option is to use ``enumerate``:
 
+```python
 >>> for i, item in enumerate(z):
 ...    print i, item
 0 a
 1 b
 2 c
 3 d
+```
 
 Why is this the clearest option?  Well, look at the ZenOfPython extract
 above: it's explicit (we used ``enumerate``); it's simple; it's readable;
@@ -73,12 +76,14 @@ exactly "beatiful".
 Python provides this kind of simplicity in as many places as possible, too.
 Consider file handles; did you know that they were iterable?
 
+```python
 >>> for line in file('data/listfile.txt'):
 ...    print line.rstrip()
 a
 b
 c
 d
+```
 
 Where Python really shines is that this kind of simple idiom -- in
 this case, iterables -- is very very easy not only to use but to
@@ -86,20 +91,22 @@ this case, iterables -- is very very easy not only to use but to
 reusable, while improving code readability dramatically.  And that's
 the sort of benefit you will get from writing idiomatic Python.
 
-Some basic data types
----------------------
+##Some basic data types
 
+###Tuples 
 I'm sure you're all familiar with tuples, lists, and dictionaries, right?
 Let's do a quick tour nonetheless.
 
-'tuples' are all over the place.  For example, this code for swapping two
+`tuples` are all over the place.  For example, this code for swapping two
 numbers implicitly uses tuples:
 
+```python
 >>> a = 5
 >>> b = 6
 >>> a, b = b, a
 >>> print a == 6, b == 5
 True True
+```
 
 That's about all I have to say about tuples.
 
@@ -107,6 +114,7 @@ I use lists and dictionaries *all the time*.  They're the two greatest
 inventions of mankind, at least as far as Python goes.  With lists,
 it's just easy to keep track of stuff:
 
+```python
 >>> x = []
 >>> x.append(5)
 >>> x.extend([6, 7, 8])
@@ -115,27 +123,34 @@ it's just easy to keep track of stuff:
 >>> x.reverse()
 >>> x
 [8, 7, 6, 5]
+```
 
 It's also easy to sort.  Consider this set of data:
 
+```python
 >>> y = [ ('IBM', 5), ('Zil', 3), ('DEC', 18) ]
+```
 
 The ``sort`` method will run ``cmp`` on each of the tuples,
 which sort on the first element of each tuple:
 
+```python
 >>> y.sort()
 >>> y
 [('DEC', 18), ('IBM', 5), ('Zil', 3)]
+```
 
 Often it's handy to sort tuples on a different tuple element, and there
 are several ways to do that.  I prefer to provide my own sort method:
 
+```
 >>> def sort_on_second(a, b):
 ...   return cmp(a[1], b[1])
 
 >>> y.sort(sort_on_second)
 >>> y
 [('Zil', 3), ('IBM', 5), ('DEC', 18)]
+```
 
 Note that here I'm using the builtin ``cmp`` method (which is what ``sort``
 uses by default: ``y.sort()`` is equivalent to ``y.sort(cmp)``) to do the
@@ -147,11 +162,12 @@ value, as I'll show you below.
 (For a more in-depth discussion of sorting options, check out the
 `Sorting HowTo <http://wiki.python.org/moin/HowTo/Sorting>`__.)
 
-On to dictionaries!
+### On to dictionaries!
 
 Your basic dictionary is just a hash table that takes keys and returns
 values:
 
+```python
 >>> d = {}
 >>> d['a'] = 5
 >>> d['b'] = 4
@@ -160,13 +176,16 @@ values:
 {'a': 5, 'c': 18, 'b': 4}
 >>> d['a']
 5
+``
 
 You can also initialize a dictionary using the ``dict`` type to create
 a dict object:
 
+```python
 >>> e = dict(a=5, b=4, c=18)
 >>> e
 {'a': 5, 'c': 18, 'b': 4}
+```
 
 Dictionaries have a few really neat features that I use pretty frequently.
 For example, let's collect (key, value) pairs where we potentially have
@@ -180,18 +199,23 @@ multiple values for each key.  That is, given a file containing this data, ::
 
 suppose we want to keep all the values?  If we just did it the simple way,
 
+```python
 >>> d = {}
 >>> for line in file('data/keyvalue.txt'):
 ...   key, value = line.split()
 ...   d[key] = int(value)
+```
 
 we would lose all but the last value for each key:
 
+```python
 >>> d
 {'a': 2, 'c': 1, 'b': 6, 'd': 7}
+```
 
 You can collect *all* the values by using ``get``:
 
+```python
 >>> d = {}
 >>> for line in file('data/keyvalue.txt'):
 ...   key, value = line.split()
@@ -200,6 +224,7 @@ You can collect *all* the values by using ``get``:
 ...   d[key] = l
 >>> d
 {'a': [5, 2], 'c': [1], 'b': [6], 'd': [7]}
+```
 
 The key point here is that ``d.get(k, default)`` is equivalent to
 ``d[k]`` if ``d[k]`` already exists; otherwise, it returns ``default``.
@@ -218,19 +243,23 @@ key.
 
 First, let's define a sort function:
 
+```python
 >>> def sort_by_sum_value(a, b):
 ...    sum_a = sum(a[1])
 ...    sum_b = sum(b[1])
 ...    return cmp(sum_a, sum_b)
+```
 
 Now apply it to the dictionary items:
 
+```python
 >>> items = d.items()
 >>> items
 [('a', [5, 2]), ('c', [1]), ('b', [6]), ('d', [7])]
 >>> items.sort(sort_by_sum_value)
 >>> items
 [('c', [1]), ('b', [6]), ('a', [5, 2]), ('d', [7])]
+```
 
 and voila, you have your list of keys sorted by summed values!
 
@@ -239,22 +268,27 @@ do with dictionaries.  I think they're incredibly powerful.
 
 .. @CTB invert dictionary
 
-List comprehensions
--------------------
+###List comprehensions
+
 
 List comprehensions are neat little constructs that will shorten your
 lines of code considerably.  Here's an example that constructs a list
 of squares between 0 and 4:
 
+```python
 >>> z = [ i**2 for i in range(0, 5) ]
 >>> z
 [0, 1, 4, 9, 16]
+```
 
 You can also add in conditionals, like requiring only even numbers:
 
+```python
 >>> z = [ i**2 for i in range(0, 10) if i % 2 == 0 ]
 >>> z
 [0, 4, 16, 36, 64]
+```
+
 
 The general form is ::
 
@@ -272,15 +306,18 @@ for simple math.  Consider a file containing data and comments: ::
 
 where you want to read in the numbers only:
 
+```python
 >>> data = [ int(x) for x in open('data/commented-data.txt') if x[0] != '#' ]
 >>> data
 [1, 2]
+```
 
 This is short, simple, and very explicit!
 
 For simple math, suppose you need to calculate the average and stddev of
 some numbers.  Just use a list comprehension:
 
+```python
 >>> import math
 >>> data = [ 1, 2, 3, 4, 5 ]
 >>> average = sum(data) / float(len(data))
@@ -288,16 +325,18 @@ some numbers.  Just use a list comprehension:
 >>> stddev = math.sqrt(stddev)
 >>> print average, '+/-', stddev
 3.0 +/- 1.41421356237
+```
 
 Oh, and one rule of thumb: if your list comprehension is longer than
 one line, change it to a for loop; it will be easier to read, and easier
 to understand.
 
-Building your own types
------------------------
+###Building your own types
+
 
 Most people should be pretty familiar with basic classes.
 
+```python
 >>> class A:
 ...   def __init__(self, item):
 ...      self.item = item
@@ -307,6 +346,7 @@ Most people should be pretty familiar with basic classes.
 >>> x = A('world')
 >>> x.hello()
 hello, world
+```
 
 There are a bunch of neat things you can do with classes, but one of
 the neatest is building new types that can be used with standard
@@ -314,6 +354,7 @@ Python list/dictionary idioms.
 
 For example, let's consider a basic binning class.
 
+```python
 >>> class Binner:
 ...   def __init__(self, binwidth, binmax):
 ...     self.binwidth, self.binmax = binwidth, binmax
@@ -323,28 +364,35 @@ For example, let's consider a basic binning class.
 ...   def add(self, value):
 ...     bin = value / self.binwidth
 ...     self.bins[bin] += 1
+```
 
 This behaves as you'd expect:
 
+```python
 >>> binner = Binner(5, 20)
 >>> for i in range(0,20):
 ...   binner.add(i)
 >>> binner.bins
 [5, 5, 5, 5, 0]
+```
 
 ...but wouldn't it be nice to be able to write this? ::
 
+```python
    for i in range(0, len(binner)):
       print i, binner[i]
-
+```
 or even this? ::
 
+```python
    for i, bin in enumerate(binner):
       print i, bin
+```
 
 This is actually quite easy, if you make the ``Binner`` class look like a
 list by adding two special functions:
 
+```python
 >>> class Binner:
 ...   def __init__(self, binwidth, binmax):
 ...     self.binwidth, self.binmax = binwidth, binmax
@@ -364,9 +412,11 @@ list by adding two special functions:
 >>> binner = Binner(5, 20)
 >>> for i in range(0,20):
 ...   binner.add(i)
+```
 
 and now we can treat ``Binner`` objects as normal lists:
 
+```python
 >>> for i in range(0, len(binner)):
 ...   print i, binner[i]
 0 5
@@ -383,6 +433,8 @@ and now we can treat ``Binner`` objects as normal lists:
 5
 0
 
+```
+
 In the case of ``len(binner)``, Python knows to use the special method
 ``__len__``, and likewise ``binner[i]`` just calls ``__getitem__(i)``.
 
@@ -394,6 +446,7 @@ Note that making your own read-only dictionaries is pretty simple, too:
 just provide the ``__getitem__`` function, which is called for non-integer
 values as well:
 
+```python
 >>> class SillyDict:
 ...    def __getitem__(self, key):
 ...       print 'key is', key
@@ -403,15 +456,18 @@ values as well:
 key is hello, world
 >>> x
 'hello, world'
+```
 
 You can also write your own mutable types, e.g.
 
+```python
 >>> class SillyDict:
 ...   def __setitem__(self, key, value):
 ...      print 'setting', key, 'to', value
 >>> sd = SillyDict()
 >>> sd[5] = 'world'
 setting 5 to world
+```
 
 but I have found this to be less useful in my own code, where I'm
 usually writing special objects like the ``Binner`` type above: I
@@ -434,8 +490,8 @@ Mediating between these options is mostly a matter of experience.
 
 .. @CTB __getattr__ trick
 
-Iterators
----------
+###Iterators
+
 
 Iterators are another built-in Python feature; unlike the list and
 dict types we discussed above, an iterator isn't really a *type*, but
@@ -448,6 +504,7 @@ of the mapping and sequence protocols above, when we defined
 Iterators are more general versions of the sequence protocol; here's an
 example:
 
+```python
 >>> class SillyIter:
 ...   i = 0
 ...   n = 5
@@ -467,6 +524,7 @@ example:
 3
 4
 5
+```
 
 Here, ``__iter__`` just returns ``self``, an object that has the
 function ``next()``, which (when called) either returns a value or
@@ -476,6 +534,7 @@ We've actually already met several iterators in disguise; in particular,
 ``enumerate`` is an iterator.  To drive home the point, here's a simple
 reimplementation of ``enumerate``:
 
+```python
 >>> class my_enumerate:
 ...   def __init__(self, some_iter):
 ...      self.some_iter = iter(some_iter)
@@ -493,9 +552,11 @@ reimplementation of ``enumerate``:
 0 a
 1 b
 2 c
+```
 
 You can also iterate through an iterator the "old-fashioned" way:
 
+```python
 >>> some_iter = iter(['a', 'b', 'c'])
 >>> while 1:
 ...   try:
@@ -505,6 +566,7 @@ You can also iterate through an iterator the "old-fashioned" way:
 a
 b
 c
+```
 
 but that would be silly in most situations! I use this if I just want
 to get the first value or two from an iterator.
@@ -514,6 +576,7 @@ the ``__iter__`` function.  You can all too easily write an iterator that
 isn't as re-usable as you think it is.  For example, suppose you had
 the following class:
 
+```python
 >>> class MyTrickyIter:
 ...   def __init__(self, thelist):
 ...      self.thelist = thelist
@@ -527,10 +590,12 @@ the following class:
 ...      if self.index < len(self.thelist):
 ...         return self.thelist[self.index]
 ...      raise StopIteration
+```
 
 This works just like you'd expect as long as you create a new object each
 time:
 
+```python
 >>> for i in MyTrickyIter(['a', 'b']):
 ...   for j in MyTrickyIter(['a', 'b']):
 ...      print i, j
@@ -538,24 +603,28 @@ a a
 a b
 b a
 b b
+```
 
 but it will break if you create the object just once:
 
+```python
 >>> mi = MyTrickyIter(['a', 'b'])
 >>> for i in mi:
 ...   for j in mi:
 ...      print i, j
 a b
+```
 
 because self.index is incremented in each loop.
 
-Generators
-----------
+###Generators
+
 
 Generators are a Python implementation of `coroutines
 <http://en.wikipedia.org/wiki/Coroutine>`__.  Essentially, they're
 functions that let you suspend execution and return a result:
 
+```python
 >>> def g():
 ...   for i in range(0, 5):
 ...      yield i**2
@@ -566,9 +635,11 @@ functions that let you suspend execution and return a result:
 4
 9
 16
+```
 
 You could do this with a list just as easily, of course:
 
+```python
 >>> def h():
 ...   return [ x ** 2 for x in range(0, 5) ]
 >>> for i in h():
@@ -578,6 +649,7 @@ You could do this with a list just as easily, of course:
 4
 9
 16
+```
 
 But you can do things with generators that you couldn't do with finite
 lists.  Consider two full implementation of Eratosthenes' Sieve for
@@ -586,13 +658,16 @@ finding prime numbers, below.
 First, let's define some boilerplate code that can be used by either
 implementation:
 
+```python
 >>> def divides(primes, n):
 ...   for trial in primes:
 ...      if n % trial == 0: return True
 ...   return False
+```
 
 Now, let's write a simple sieve with a generator:
 
+```python
 >>> def prime_sieve():
 ...    p, current = [], 1
 ...    while 1:
@@ -600,10 +675,12 @@ Now, let's write a simple sieve with a generator:
 ...        if not divides(p, current): # if any previous primes divide, cancel
 ...            p.append(current)           # this is prime! save & return
 ...            yield current
+```
 
 This implementation will find (within the limitations of Python's math
 functions) all prime numbers; the programmer has to stop it herself:
 
+```python
 >>> for i in prime_sieve():
 ...    print i
 ...    if i > 10:
@@ -613,12 +690,14 @@ functions) all prime numbers; the programmer has to stop it herself:
 5
 7
 11
+```
 
 So, here we're using a generator to implement the generation of an
 infinite series with a single function definition.  To do the equivalent
 with an iterator would require a class, so that the object instance can
 hold the variables:
 
+```python
 >>> class iterator_sieve:
 ...    def __init__(self):
 ...       self.p, self.current = [], 1
@@ -640,10 +719,12 @@ hold the variables:
 5
 7
 11
+```
 
 It is also *much* easier to write routines like ``enumerate`` as a
 generator than as an iterator:
 
+```python
 >>> def gen_enumerate(some_iter):
 ...   count = 0
 ...   for val in some_iter:
@@ -655,30 +736,35 @@ generator than as an iterator:
 0 a
 1 b
 2 c
+```
 
 Abstruse note: we don't even have to catch ``StopIteration`` here, because
 the for loop simply ends when ``some_iter`` is done!
 
-assert
-------
+###assert
+
 
 One of the most underused keywords in Python is ``assert``.  Assert is
 pretty simple: it takes a boolean, and if the boolean evaluates to
 False, it fails (by raising an AssertionError exception).  ``assert True``
 is a no-op.
 
+```python
 >>> assert True
 >>> assert False
 Traceback (most recent call last):
    ...
 AssertionError
+```
 
 You can also put an optional message in:
 
+```python
 >>> assert False, "you can't do that here!"
 Traceback (most recent call last):
    ...
 AssertionError: you can't do that here!
+```
 
 ``assert`` is very, very useful for making sure that code is behaving
 according to your expectations during development.  Worried that
@@ -690,12 +776,14 @@ Also note that 'assert' statements are removed from optimized code, so only
 use them to conditions related to actual development, and make sure that
 the statement you're evaluating has no side effects.  For example,
 
+```python
 >>> a = 1
 >>> def check_something():
 ...   global a
 ...   a = 5
 ...   return True
 >>> assert check_something()
+```
 
 will behave differently when run under optimization than when run without
 optimization, because the ``assert`` line will be removed completely from
@@ -705,8 +793,7 @@ If you need to raise an exception in production code, see below.  The
 quickest and dirtiest way is to just "raise Exception", but that's kind
 of non-specific ;).
 
-Conclusions
------------
+###Conclusions
 
 Use of common Python idioms -- both in your python code and for your
 new types -- leads to short, sweet programs.
