@@ -1,5 +1,5 @@
-Idiomatic Python
-================
+# Idiomatic Python
+
 
 Extracts from `The Zen of Python
 <http://www.python.org/doc/Humor.html#zen>`__ by Tim Peters:
@@ -31,9 +31,9 @@ extent.)
 
 For example, let's consider the right way to keep track of the item number
 while iterating over a list.  So, given a list z,
-
+```
 >>> z = [ 'a', 'b', 'c', 'd' ]
-
+```
 let's try printing out each item along with its index.
 
 You could use a while loop:
