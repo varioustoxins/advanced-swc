@@ -274,9 +274,7 @@ Now apply it to the dictionary items:
 and voila, you have your list of keys sorted by summed values!
 
 As I said, there are tons and tons of cute little tricks that you can
-do with dictionaries.  I think they're incredibly powerful.
-
-.. @CTB invert dictionary
+do with dictionaries.  I think they're incredibly powerful. In actual fact __they underly the whole language...__
 
 ### List comprehensions
 
